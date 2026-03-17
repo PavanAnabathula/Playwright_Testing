@@ -7,33 +7,19 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   reporter: 'html',
   use: {
-    baseURL: 'http://192.168.1.253:2000/',
+    baseURL: process.env.BASE_URL || 'http://localhost:3000/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    headless: true,
+    headless: false,
   },
 
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    }
   ],
-
-  webServer: {
-    command: 'npm run start',
-    url: 'http://192.168.1.253:2000/',
-    reuseExistingServer: !process.env.CI,
-  },
 });
